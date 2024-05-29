@@ -19,6 +19,24 @@
             <li class="nav-item">
                 <a class="nav-link" href="/contact-us">Contact Us</a>
             </li>
+            
+            @guest
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('register') }}">Signup</a>
+                </li>
+            @else
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Logout
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
+            @endguest
         </ul>
     </div>
 </nav>

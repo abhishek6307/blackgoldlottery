@@ -31,3 +31,14 @@ Route::get('/draw', [DrawController::class, 'draw']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/guest/signup', [GuestController::class, 'showSignupForm'])->name('guest.signup');
+Route::post('/guest/signup', [GuestController::class, 'signup']);
+Route::get('/guest/login', [GuestController::class, 'showLoginForm'])->name('guest.login');
+Route::post('/guest/login', [GuestController::class, 'login']);
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
+});

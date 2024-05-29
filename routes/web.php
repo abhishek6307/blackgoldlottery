@@ -27,3 +27,7 @@ Route::get('/draw', [LotteryController::class, 'draw']); //
 Route::get('/draws', [DrawController::class, 'index']);
 Route::post('/ticket', [TicketController::class, 'store']);
 Route::get('/draw', [DrawController::class, 'draw']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Lottery;
 use Carbon\Carbon;
+use Illuminate\Validation\ValidationException;
 
 class WelcomeController extends Controller
 {
@@ -41,8 +42,14 @@ class WelcomeController extends Controller
         return view('welcome', compact('undrawnLottery', 'timeRemaining', 'current_time'));
     }
 
-    public function withdraw()
+    public function withdraw(Request $request)
     {
+        // Example validation rules, modify according to your needs
+        $validatedData = $request->validate([
+            // Add validation rules here if any parameters are being passed
+            // 'parameter_name' => 'required|type',
+        ]);
+
         $undrawnLottery = Lottery::where('drawn', false)->first();
         if ($undrawnLottery) {
             $this->withdrawLottery($undrawnLottery);

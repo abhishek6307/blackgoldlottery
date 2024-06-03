@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\DrawController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,10 @@ use App\Http\Controllers\WelcomeController;
 |
 */
 
+Route::post('/lottery/payment', [PaymentController::class, 'initiatePayment'])->name('lottery.payment');
 
+// Route for handling payment callback
+Route::get('/payment/callback', [PaymentController::class, 'paymentCallback'])->name('payment.callback');
 use App\Http\Controllers\LotteryController;
 
 Route::get('/', [WelcomeController::class, 'index']);
@@ -30,7 +34,7 @@ Route::get('/draw', [DrawController::class, 'draw']);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 Route::get('/guest/signup', [GuestController::class, 'showSignupForm'])->name('guest.signup');
 Route::post('/guest/signup', [GuestController::class, 'signup']);
@@ -38,7 +42,5 @@ Route::get('/guest/login', [GuestController::class, 'showLoginForm'])->name('gue
 Route::post('/guest/login', [GuestController::class, 'login']);
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });

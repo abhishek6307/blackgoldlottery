@@ -11,4 +11,13 @@ class Ticket extends Model
     protected $fillable = [
         'number', 'lottery_id', 'user_id', 'created_at', 'updated_at'
     ];
+    public function lottery()
+    {
+        return $this->belongsTo(Lottery::class);
+    }
+
+    public function winningNumbers()
+{
+    return $this->hasMany(WinningNumber::class, 'lottery_id', 'lottery_id')->where('user_id', $this->user_id);
+}
 }

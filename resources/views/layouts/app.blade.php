@@ -136,12 +136,12 @@
 
         .lottery-ticket {
             background: linear-gradient(94deg, #6d6656, #60431e);
-            border: 2px solid #986c34;
+            border: 1px solid white;
             width: 100%;
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Darker shadow for depth */
-            border-radius: 10px;
+            border-radius: 5px;
             margin-bottom: 20px;
         }
         .lottery-ticket h1 {
@@ -175,8 +175,8 @@
         }
         .lottery-ticket .serial {
             margin-top: 20px;
-            font-size: 14px;
-            color: #986c34; /* Lighter text for contrast */
+            color: #ffffff; /* Lighter text for contrast */
+            font-size: 15px;
         }
         .btn {
             background-color: #986c34; /* Gold button */
@@ -219,6 +219,56 @@
         .card-header {
             background: transparent;
         }
+        .card.card-body.mx-3.mx-md-4.mt-n6 {
+            max-height: 62vh;
+            background: linear-gradient(94deg, #986c34, #956a33);
+            border: 1px solid white;
+        }
+        li.list-group-item.border-0 {
+            background: #976b33;
+            color:white;
+        }
+
+        #profile-tickets-section .form-container {
+            border: 1px solid white;
+            background: #000000;
+            padding: 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: -5rem auto 2rem auto;
+            z-index: 1;
+            position: relative;
+            width: 100%;
+            left: 0%;
+            color: white;
+            height: 75%;
+            bottom: 14%;
+        }
+        .card-header.p-0.mt-n4.mx-3.sm-ticket-prof-show {
+            height: 25rem;
+            width: 100%;
+            border-radius: 7px;
+
+        }
+        .sm-ticket-prof-show .lottery-ticket {
+            background: linear-gradient(94deg, #6d6656, #60431e);
+            border: 2px solid #986c34;
+            width: 100%;
+            padding: 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .text-sm {
+            color: white;
+            font-weight: 500;
+            font-size: 17px !important;
+        }
+        .card {
+            background: linear-gradient(360deg, #6d6656, #60431e);
+}
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -232,9 +282,6 @@
     <main>
         @yield('content')
     </main>
-    <footer>
-        <!-- Footer content -->
-        <p>&copy; 2024 Black Gold Lottery. All rights reserved.</p>
-    </footer>
+
 </body>
 </html>

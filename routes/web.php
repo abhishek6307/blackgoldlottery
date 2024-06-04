@@ -27,10 +27,8 @@ Route::get('/', [WelcomeController::class, 'index']);
 Route::post('/withdraw', [WelcomeController::class, 'withdraw'])->name('lottery.withdraw');
 
 Route::get('/lotteries', [LotteryController::class, 'index']);
-Route::get('/draw', [LotteryController::class, 'draw']); //
-Route::get('/draws', [DrawController::class, 'index']);
+Route::get('/draw', [LotteryController::class, 'draw']);
 Route::post('/ticket', [TicketController::class, 'store']);
-Route::get('/draw', [DrawController::class, 'draw']);
 
 Auth::routes();
 
@@ -40,6 +38,9 @@ Route::get('/guest/signup', [GuestController::class, 'showSignupForm'])->name('g
 Route::post('/guest/signup', [GuestController::class, 'signup']);
 Route::get('/guest/login', [GuestController::class, 'showLoginForm'])->name('guest.login');
 Route::post('/guest/login', [GuestController::class, 'login']);
+
+
+Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile')->middleware('auth');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

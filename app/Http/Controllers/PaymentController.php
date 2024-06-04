@@ -7,7 +7,6 @@ use Razorpay\Api\Api;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Ticket;
 use App\Models\Lottery;
-use App\Models\WinningNumber;
 use App\Models\TicketPurchasedDetail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -96,7 +95,7 @@ class PaymentController extends Controller
                 $ticket->number = str_pad($request->number, 2, '0', STR_PAD_LEFT);
                 $ticketNumber = str_pad($request->number, 2, '0', STR_PAD_LEFT);
                 $ticket->lottery_id = $undrawnLotteryId;
-                $ticket->save();
+                $ticket->user_id = $details['payment']['notes']['user_id'];
 
                 $result = $this->generateWinningNumbers($ticket);
 
@@ -104,11 +103,18 @@ class PaymentController extends Controller
                     return response()->json(['error' => 'All Tickets are Saled ! Look for new one.'], 403);
                 }
 
+                $ticket->win_num1 = $result['winningNumbers'][0] ?? null;
+                $ticket->win_num2 = $result['winningNumbers'][1] ?? null;
+                $ticket->win_num3 = $result['winningNumbers'][2] ?? null;
+                $ticket->win_num4 = $result['winningNumbers'][3] ?? null;
+                $ticket->win_num5 = $result['winningNumbers'][4] ?? null;
+                $ticket->save();
+
             } catch (\Exception $e) {
                 Log::error('Ticket purchase error: ' . $e->getMessage());
                 return response()->json(['error' => 'An error occurred during ticket purchase.'.$e], 500);
             }
-            return redirect('/');
+            return redirect('/profile');
         } else {
             return redirect('/');
         }
@@ -120,27 +126,15 @@ class PaymentController extends Controller
         $count = intval($ticket->number);
         $winningNumbers = [];
 
-        $existingWinningNumbers = WinningNumber::where('lottery_id', $lotteryId)->pluck('number')->toArray();
-
-        if (count($existingWinningNumbers) >= 99) {
-            return ['status' => 'full'];
-        }
-
+        // Assuming we need a unique set of 5 numbers for each ticket
         while (count($winningNumbers) < $count) {
-            $number = str_pad(mt_rand(1, 99), 2, '0', STR_PAD_LEFT);
+            $number = mt_rand(1, 99);
 
-            if (!in_array($number, $existingWinningNumbers) && !in_array($number, $winningNumbers)) {
+            if (!in_array($number, $winningNumbers)) {
                 $winningNumbers[] = $number;
-
-                WinningNumber::create([
-                    'lottery_id' => $lotteryId,
-                    'number' => $number,
-                ]);
-
-                $existingWinningNumbers[] = $number;
             }
         }
 
-        return ['status' => 'success'];
+        return ['status' => 'success', 'winningNumbers' => $winningNumbers];
     }
 }

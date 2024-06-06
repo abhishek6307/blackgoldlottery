@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Razorpay\Api\Api;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Ticket;
+use App\Models\WinningNumber;
 use App\Models\Lottery;
 use App\Models\TicketPurchasedDetail;
 use Carbon\Carbon;
@@ -20,7 +21,7 @@ class PaymentController extends Controller
         ]);
 
         $user = Auth::user();
-        $amount = $validatedData['number'] * 11 * 100; // Amount in paise (assuming each ticket costs 10 units)
+        $amount = $validatedData['number'] * 11 * 100; // Amount in paise (assuming each ticket costs 11 units)
 
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
         $order = $api->order->create([
@@ -61,27 +62,6 @@ class PaymentController extends Controller
 
         if ($payment->status == 'captured') {
             try {
-                // Save the payment and order details to the database
-                $ticketDetail = new TicketPurchasedDetail();
-                $ticketDetail->payment_id = $details['payment']['id'];
-                $ticketDetail->order_id = $details['order']['id'];
-                $ticketDetail->receipt = $details['order']['receipt'];
-                $ticketDetail->amount = $details['payment']['amount'];
-                $ticketDetail->currency = $details['payment']['currency'];
-                $ticketDetail->status = $details['payment']['status'];
-                $ticketDetail->method = $details['payment']['method'];
-                $ticketDetail->vpa = $details['payment']['vpa'] ?? null;
-                $ticketDetail->email = $details['payment']['email'];
-                $ticketDetail->contact = $details['payment']['contact'];
-                $ticketDetail->fee = $details['payment']['fee'] ?? null;
-                $ticketDetail->tax = $details['payment']['tax'] ?? null;
-                $ticketDetail->description = $details['payment']['description'] ?? null;
-                $ticketDetail->user_id = $details['payment']['notes']['user_id'];
-                $ticketDetail->name = $details['payment']['notes']['name'];
-                $ticketDetail->role = $details['payment']['notes']['role'];
-                $ticketDetail->type = $details['payment']['notes']['type'];
-                $ticketDetail->total_quantity = $details['payment']['notes']['totalQuantity'];
-                $ticketDetail->save();
 
                 $request->number = $details['order']['notes']['totalQuantity'];
 
@@ -109,6 +89,31 @@ class PaymentController extends Controller
                 $ticket->win_num4 = $result['winningNumbers'][3] ?? null;
                 $ticket->win_num5 = $result['winningNumbers'][4] ?? null;
                 $ticket->save();
+                
+                $ticket_id = $ticket->id;
+                // Save the payment and order details to the database
+                $ticketDetail = new TicketPurchasedDetail();
+                $ticketDetail->lottery_id = $undrawnLotteryId;
+                $ticketDetail->ticket_id = $ticket_id;
+                $ticketDetail->payment_id = $details['payment']['id'];
+                $ticketDetail->order_id = $details['order']['id'];
+                $ticketDetail->receipt = $details['order']['receipt'];
+                $ticketDetail->amount = $details['payment']['amount'];
+                $ticketDetail->currency = $details['payment']['currency'];
+                $ticketDetail->status = $details['payment']['status'];
+                $ticketDetail->method = $details['payment']['method'];
+                $ticketDetail->vpa = $details['payment']['vpa'] ?? null;
+                $ticketDetail->email = $details['payment']['email'];
+                $ticketDetail->contact = $details['payment']['contact'];
+                $ticketDetail->fee = $details['payment']['fee'] ?? null;
+                $ticketDetail->tax = $details['payment']['tax'] ?? null;
+                $ticketDetail->description = $details['payment']['description'] ?? null;
+                $ticketDetail->user_id = $details['payment']['notes']['user_id'];
+                $ticketDetail->name = $details['payment']['notes']['name'];
+                $ticketDetail->role = $details['payment']['notes']['role'];
+                $ticketDetail->type = $details['payment']['notes']['type'];
+                $ticketDetail->total_quantity = $details['payment']['notes']['totalQuantity'];
+                $ticketDetail->save();
 
             } catch (\Exception $e) {
                 Log::error('Ticket purchase error: ' . $e->getMessage());
@@ -125,13 +130,26 @@ class PaymentController extends Controller
         $lotteryId = $ticket->lottery_id;
         $count = intval($ticket->number);
         $winningNumbers = [];
+        $existingWinningNumbers = WinningNumber::where('lottery_id', $lotteryId)->pluck('number')->toArray();
+
+        if (count($existingWinningNumbers) >= 99) {
+            return ['status' => 'full'];
+        }
 
         // Assuming we need a unique set of 5 numbers for each ticket
         while (count($winningNumbers) < $count) {
-            $number = mt_rand(1, 99);
+            $number = str_pad(mt_rand(1, 99), 2, '0', STR_PAD_LEFT);
 
-            if (!in_array($number, $winningNumbers)) {
+            if (!in_array($number, $existingWinningNumbers) && !in_array($number, $winningNumbers)) {
                 $winningNumbers[] = $number;
+
+                $user = Auth::user();
+                WinningNumber::create([
+                    'lottery_id' => $lotteryId,
+                    'number' => $number,
+                    'user_id' => $user->id,
+                ]);
+                $existingWinningNumbers[] = $number;
             }
         }
 

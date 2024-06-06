@@ -25,7 +25,7 @@ class TicketController extends Controller
             $minute = $current_time->minute;
 
             // Check if the current time is within the first 25 minutes of the half-hour period
-            if ($minute % 30 < 5) {
+            if ($minute % 1 < 5) {
                 $ticket = new Ticket();
                 $ticket->number = str_pad($request->number, 2, '0', STR_PAD_LEFT);
                 $ticket->lottery_id = $undrawnLotteryId;

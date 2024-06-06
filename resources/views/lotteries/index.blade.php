@@ -11,7 +11,7 @@
     <ul class="list-group">
         @foreach($lotteries as $lottery)
             <li class="list-group-item">
-                Lottery created at {{ $lottery->created_at }}: 
+                Lottery created at {{ $lottery->created_at->format('d M h:i A') }}: 
                 @if($lottery->drawn)
                     Drawn at {{ $lottery->draw_time }} - Winning Number: {{ $lottery->winning_number }}
                 @else

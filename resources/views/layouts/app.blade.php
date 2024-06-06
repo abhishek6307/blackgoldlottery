@@ -154,7 +154,7 @@
             font-weight: 700;
             margin: 10px 0;
             font-size: 18px;
-            color: #986c34; /* Inherits the golden color */
+            color: #50aa54; /* Inherits the golden color */
         }
         .numbers {
             display: flex;
@@ -225,7 +225,7 @@
             border: 1px solid white;
         }
         li.list-group-item.border-0 {
-            background: #976b33;
+            background: transparent;
             color:white;
         }
 
@@ -267,8 +267,56 @@
             font-size: 17px !important;
         }
         .card {
-            background: linear-gradient(360deg, #6d6656, #60431e);
-}
+            background: linear-gradient(275deg, #6d6656, #60431e);
+        }
+        h4.mb-0 {
+            color: #58b05c;
+        }
+        th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 {
+            font-size: 15px !important;
+            color:#000000 !important;
+        }
+
+        span.text-xs.font-weight-bold {
+            font-size: 15px !important;
+        }
+        h6.text-dark.text-sm.font-weight-bold.mb-0 {
+            color: white !important;
+        }
+
+        h6 {
+            color: white;
+        }
+
+        p.text-secondary.font-weight-bold.text-xs.mt-1.mb-0 {
+            color: black !important;
+        }
+
+        span.text-xs.font-weight-bold {
+            font-size: 14px !important;
+            color: white;
+        }
+
+        .progress {
+            height: 6px !important;
+        }
+
+        .progress-bar.bg-gradient-info {
+            height: 6px !important;
+            background-image: linear-gradient(195deg, #0c7614 0%, #072f64 100%);
+        }
+        .text-dark {
+            color: #4caf50 !important;
+        }
+
+
+        h5 {
+            color: #4caf50;
+        }
+        .input-group.input-group-outline .form-control {
+            background: transparent;
+            color: white;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -148,14 +148,29 @@
                                             }
 
                                             $drawTimePlus30 = \Carbon\Carbon::parse($ticket->lottery->created_at)->addMinutes(30);
+                             
+                                            $user_won = 0;
+                                            $winning_number = 0;
+                                            foreach($win_nums as $win_num) {
+                                            
+                                              if($win_num == $ticket->lottery->winning_number) {
+                                                $user_won = 1;
+                                                $winning_number = $ticket->lottery->winning_number;
+                                                $break;
+                                              } 
+                                              
+                                                
+                                            }
+                        
+                        
                                         @endphp
 
                                         @if($isDrawn)
-                                            <p>Drawn Date-Time: {{ $drawTimePlus30 }}</p>
+                                            <p>Drawn Date-Time: {{ $drawTimePlus30->format('d M h:i A') }}</p>
                                             <div class="mt-0">
                                                 <div id="timer">Winner Number</div><p style="font-size:12px;">Revealed !</p>
                                                 <div class="numbers">
-                                                <div id="numbers" class="number">{{$ticket->lottery->winning_number}}</div>
+                                                <div id="numbers" class="number" style="background-color: green;">{{$ticket->lottery->winning_number}}</div>
                                             </div>
                                             </div>
                                             <div class="mt-0">
@@ -163,7 +178,7 @@
                                             </div>
                                         
                                         @else
-                                            <p>Draw Date-Time:{{ $drawTimePlus30 }}</p>
+                                            <p>Draw Date-Time:{{ $drawTimePlus30->format('d M h:i A') }}</p>
                                             <div class="mt-0">
                                                 <div id="timer">Time remaining: <span  class="remaining-times" id="time">{{ gmdate('i:s', $timeRemaining) }}</span></div>
                                                 <div id="timer">Winner Number</div>
@@ -175,8 +190,11 @@
                                        
                                             <div class="numbers">
                                             @foreach($win_nums as $win_num)
-                                                <div id="numbers" class="number">{{$win_num}}</div>
+                                                <div id="numbers" class="number" style="{{ $win_num == $winning_number ? 'background-color: green;' : '' }}">
+                                                    {{$win_num}}
+                                                </div>
                                             @endforeach
+
                                             </div>
                                        
                                         <div class="serial">Serial Number: 123456789</div>
@@ -193,26 +211,14 @@
                                 <h5>
                                 Ticket Not WIthdrawn !
                                 </h5>
-                                @endif
+                              @endif
                          
-                                @php
-                                $user_won = 0;
-                              foreach($win_nums as $win_num) {
-                               
-                                if($win_num == $ticket->lottery->winning_number) {
-                                  $user_won = 1;
-                                  $break;
-                                } 
                                 
-                                  
-                              }
-                        
-                              @endphp
                               @if($user_won)
                               <p class="mb-4 text-sm">Congratulation, You Won !</p>
                               @else
                                @if($isDrawn)
-                              <p class="mb-4 text-sm">Soryy, Try Next Time!</p>
+                              <p class="mb-4 text-sm">Bad Luck !, Try Next Time!</p>
                               @else
                               <p class="mb-4 text-sm">You can we a Winner !</p>
                                 @endif

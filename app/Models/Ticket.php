@@ -9,7 +9,7 @@ class Ticket extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'number', 'lottery_id', 'user_id', 'created_at', 'updated_at'
+        'number', 'lottery_id', 'user_id', 'win_num1', 'win_num2', 'win_num3', 'win_num4', 'win_num5'
     ];
     public function lottery()
     {

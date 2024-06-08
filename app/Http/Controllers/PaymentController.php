@@ -18,10 +18,11 @@ class PaymentController extends Controller
     {
         $validatedData = $request->validate([
             'number' => 'required|integer|min:1|max:5',
+            'ticketPrice' => 'required|integer|min:11',
         ]);
 
         $user = Auth::user();
-        $amount = $validatedData['number'] * 11 * 100; // Amount in paise (assuming each ticket costs 11 units)
+        $amount = $validatedData['number'] * $validatedData['ticketPrice'] * 100; // Amount in paise (assuming each ticket costs 11 units)
 
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
         $order = $api->order->create([
@@ -88,6 +89,8 @@ class PaymentController extends Controller
                 $ticket->win_num3 = $result['winningNumbers'][2] ?? null;
                 $ticket->win_num4 = $result['winningNumbers'][3] ?? null;
                 $ticket->win_num5 = $result['winningNumbers'][4] ?? null;
+
+                $ticket->ticket_price = $details['payment']['amount']/100;
                 $ticket->save();
                 
                 $ticket_id = $ticket->id;

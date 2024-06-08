@@ -49,7 +49,7 @@
         .banner {
             background: url('http://blackgoldlottery.local/../images/banner.jpg') no-repeat center center;
             background-size: cover;
-            height: 70vh;
+            height: 85vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -99,7 +99,8 @@
             width: 50%;
             left: 22%;
             color: white;
-            height: 65%;
+            height: 78%;
+            top: 3rem;
         }
         .form-container input, .form-container button {
             margin-top: 1rem;
@@ -154,7 +155,7 @@
             font-weight: 700;
             margin: 10px 0;
             font-size: 18px;
-            color: #50aa54; /* Inherits the golden color */
+            color: #23d323; /* Inherits the golden color */
         }
         .numbers {
             display: flex;
@@ -214,6 +215,7 @@
                 left: 0;
                 color: white;
                 height: auto;
+                bottom:6%;
             }
         }
         .card-header {
@@ -239,11 +241,11 @@
             margin: -5rem auto 2rem auto;
             z-index: 1;
             position: relative;
-            width: 100%;
+            width: 90%;
             left: 0%;
             color: white;
-            height: 75%;
-            bottom: 14%;
+            height: 100%;
+            bottom: 10%;
         }
         .card-header.p-0.mt-n4.mx-3.sm-ticket-prof-show {
             height: 25rem;
@@ -316,6 +318,38 @@
         .input-group.input-group-outline .form-control {
             background: transparent;
             color: white;
+        }
+        .green-color{
+            color: #4caf50;
+        }
+        .buyied-tickets{
+            font-size:20px;
+        }
+        a.nav-link {
+            font-size: 18px !important;
+        }
+        .card.card-plain {
+            border: 2px solid white;
+            margin: 0.6rem 0;
+        }
+        select#ticketPrice {
+            background: linear-gradient(275deg, #6d6656, #60431e);
+            color: white;
+            font-size: 18px;
+            width: 85%;
+            margin: 0 auto;
+        }
+        option:disabled {
+            color: #442626 !important;
+        }
+        option {
+            background: #6d6656;
+        }
+        @media  only screen and (min-width: 600px) {
+            .form-container {
+    
+                bottom:6% !important;
+            }
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

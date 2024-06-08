@@ -3,7 +3,7 @@
         
     </footer>
     <script>
-const pricePerTicket = 11;
+
 
 function updateNumbersAndPrice() {
     const quantity = document.getElementById('ticketCount').value;
@@ -30,7 +30,11 @@ function updateTimer() {
             timerElements[i].textContent = "00:00";
         }
         clearInterval(timerInterval);
-                location.reload();
+        
+        setTimeout(function() {
+            location.reload();
+        }, 2000); 
+        
         return;
     }
     timeRemaining -= 1;
@@ -42,4 +46,22 @@ function updateTimer() {
 }
 
 const timerInterval = setInterval(updateTimer, 1000);
+
+
+function updateNumbersAndPrice() {
+    const priceElement = document.getElementById('ticketPrice');
+    const price = parseInt(priceElement.value);
+    const quantityElement = document.getElementById('ticketCount');
+    const quantity = parseInt(quantityElement.value);
+    const totalPrice = price * quantity;
+
+    document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
+    document.getElementById('winningPrice').textContent = (price * winningMultiplier).toFixed(2);
+    
+    const numbersContainer = document.getElementById('numbers');
+    numbersContainer.innerHTML = ''; // Clear existing circles
+    for (let i = 0; i < quantity; i++) {
+        numbersContainer.innerHTML += '<div class="number"></div>'; // Add new circles based on quantity
+    }
+}
 </script>

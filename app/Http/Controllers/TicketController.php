@@ -28,6 +28,7 @@ class TicketController extends Controller
             if ($minute % 1 < 5) {
                 $ticket = new Ticket();
                 $ticket->number = str_pad($request->number, 2, '0', STR_PAD_LEFT);
+                $ticket->ticketPrice = $request->ticketPrice;
                 $ticket->lottery_id = $undrawnLotteryId;
                 $ticket->save();
 

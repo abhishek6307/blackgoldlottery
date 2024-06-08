@@ -504,8 +504,9 @@
                     <h6 class="text-dark text-sm font-weight-bold mb-0">Name : {{$winner->winner_name}}</h6>
                     <h6 class="text-dark text-sm font-weight-bold mb-0">Winning Amount : {{$winner->winning_amount}}</h6>
                     <h6 class="text-dark text-sm font-weight-bold mb-0">Winning Number : {{$winner->winner_number}}</h6>
-                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">{{$winner->created_at->format('d M h:i A')}}
-</p>
+                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                      {{$winner->created_at->format('d M h:i A')}}
+                    </p>
                   </div>
                 </div>
                 @endif

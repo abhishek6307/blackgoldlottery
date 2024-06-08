@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Lottery;
 use Carbon\Carbon;
 use App\Models\TicketUserWinner;
+use App\Models\TicketPurchasedDetail;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -14,21 +15,28 @@ class WelcomeController extends Controller
 {
     public function index()
     {
-        $undrawnLottery = Lottery::where('drawn', false)->first();
+        $undrawnLottery = Lottery::where('drawn', false)->first();         
         $current_time = Carbon::now();
-
-        // If no undrawn lottery exists, create one
+        if ($undrawnLottery) {
+            $undrawnLotteryId = $undrawnLottery->id;
+            $activeLotteryTicketsCounts = TicketPurchasedDetail::where('lottery_id', $undrawnLotteryId)
+        ->sum('total_quantity');
+        }
         if (!$undrawnLottery) {
             $undrawnLottery = Lottery::create([
                 'winning_number' => null,
                 'drawn' => false,
                 'draw_time' => null,
             ]);
-            $timeRemaining = 30 * 60;
+            $timeRemaining = 1 * 60;
+            $undrawnLotteryId = $undrawnLottery->id;
+
+            $activeLotteryTicketsCounts = TicketPurchasedDetail::where('lottery_id', $undrawnLotteryId)
+        ->sum('total_quantity');
         } else {
             // Calculate the time remaining
             $timeElapsed = $current_time->diffInSeconds($undrawnLottery->created_at);
-            $timeRemaining = 30 * 60 - $timeElapsed;
+            $timeRemaining = 1 * 60 - $timeElapsed;
 
             
             if ($timeRemaining <= 0) {
@@ -38,11 +46,11 @@ class WelcomeController extends Controller
                     'drawn' => false,
                     'draw_time' => null,
                 ]);
-                $timeRemaining = 30 * 60; // Reset timer for the new lottery
+                $timeRemaining = 1 * 60; // Reset timer for the new lottery
             }
         }
 
-        return view('welcome', compact('undrawnLottery', 'timeRemaining', 'current_time'));
+        return view('welcome', compact('undrawnLottery', 'timeRemaining', 'current_time','activeLotteryTicketsCounts'));
     }
 
 
@@ -79,7 +87,7 @@ class WelcomeController extends Controller
                 'lottery_id' => $lottery->id,
                 'winner_number' => $winningNumber,
                 'winner_name' => DB::table('users')->where('id', $ticket->user_id)->value('name'), // Direct DB query to fetch user name
-                'winning_amount' => 110, // This needs to be defined or calculated
+                'winning_amount' =>  $ticket->ticket_price * 10,
             ]);
         }
     }

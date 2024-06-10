@@ -99,7 +99,7 @@
             width: 50%;
             left: 22%;
             color: white;
-            height: 78%;
+            height: 100%;
             top: 3rem;
         }
         .form-container input, .form-container button {

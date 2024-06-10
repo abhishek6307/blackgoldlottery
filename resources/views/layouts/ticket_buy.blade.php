@@ -2,7 +2,7 @@
     .banner {
         background: url('{{ asset('images/banner5.webp') }}') no-repeat center center;
         background-size: cover;
-        height: 100vh;
+        height: 115vh;
         display: flex;
         justify-content: center;
         align-items: center;

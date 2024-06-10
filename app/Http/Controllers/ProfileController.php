@@ -28,13 +28,13 @@ class ProfileController extends Controller
                 'drawn' => false,
                 'draw_time' => null,
             ]);
-            $timeRemaining = 1 * 60;
+            $timeRemaining = 5 * 60;
         } else {
             // Calculate the time remaining
             $current_time = Carbon::now();
             $timeElapsed = $current_time->diffInSeconds($undrawnLottery->created_at);
-            $timeRemaining = 1 * 60 - $timeElapsed;
-            
+            $timeRemaining = 5 * 60 - $timeElapsed;
+
             if ($timeRemaining <= 0) {
                 // Draw the lottery
                 $winningNumber = str_pad(mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
@@ -49,7 +49,7 @@ class ProfileController extends Controller
                     'drawn' => false,
                     'draw_time' => null,
                 ]);
-                $timeRemaining = 1 * 60;
+                $timeRemaining = 5 * 60;
             }
         }
         
@@ -63,7 +63,9 @@ class ProfileController extends Controller
         $activeLotteryTicketsCounts = TicketPurchasedDetail::where('lottery_id', $undrawnLottery->id)
             ->sum('total_quantity');
         
-        $winnersToday = TicketUserWinner::whereDate('created_at', $today)->orderBy('created_at', 'desc')->get();
+        $winnersToday = TicketUserWinner::whereDate('created_at', $today)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get();
         $winnersCountToday = count($winnersToday);
         
         return view('profile', compact(
@@ -75,30 +77,57 @@ class ProfileController extends Controller
             'winnersCountToday'
         ));
     }
-    private function withdrawLottery($lottery, $winningNumber)
-{
-    // Retrieve tickets that match the winning number
-    $winningTickets = Ticket::where('lottery_id', $lottery->id)
-        ->where(function ($query) use ($winningNumber) {
-            $query->where('win_num1', $winningNumber)
-                ->orWhere('win_num2', $winningNumber)
-                ->orWhere('win_num3', $winningNumber)
-                ->orWhere('win_num4', $winningNumber)
-                ->orWhere('win_num5', $winningNumber);
-        })
-        ->get();
 
-    // Process each winning ticket
-    foreach ($winningTickets as $ticket) {
-        // Create a winner entry in the ticket_user_winners table
-        TicketUserWinner::create([
-            'ticket_id' => $ticket->id,
-            'user_id' => $ticket->user_id,
-            'lottery_id' => $lottery->id,
-            'winner_number' => $winningNumber,
-            'winner_name' => DB::table('users')->where('id', $ticket->user_id)->value('name'),
-            'winning_amount' => 110, // This needs to be defined or calculated
-        ]);
+    private function withdrawLottery($lottery, $winningNumber)
+    {
+        // Retrieve tickets and check for any digit match in the winning number
+        $winningTickets = Ticket::where('lottery_id', $lottery->id)
+            ->get()
+            ->filter(function ($ticket) use ($winningNumber) {
+                // Convert the winning number and user's numbers to arrays of digits
+                $winningDigits = str_split($winningNumber);
+                $ticketNumbers = [
+                    str_split($ticket->win_num1),
+                    str_split($ticket->win_num2),
+                    str_split($ticket->win_num3),
+                    str_split($ticket->win_num4),
+                    str_split($ticket->win_num5),
+                ];
+
+                // Check for any matching digit
+                foreach ($ticketNumbers as $ticketDigits) {
+                    if (array_intersect($winningDigits, $ticketDigits)) {
+                        return true; // A matching digit found
+                    }
+                }
+
+                return false; // No matching digit
+            });
+
+        // Process each winning ticket
+        foreach ($winningTickets as $ticket) {
+            $existingWinner = TicketUserWinner::where('lottery_id', $lottery->id)->first();
+
+            if ($existingWinner) {
+                // Update the existing record
+                $existingWinner->update([
+                    'ticket_id' => $ticket->id,
+                    'user_id' => $ticket->user_id,
+                    'winner_number' => $winningNumber,
+                    'winner_name' => DB::table('users')->where('id', $ticket->user_id)->value('name'),
+                    'winning_amount' => $ticket->ticket_price * 10,
+                ]);
+            } else {
+                // Create a new record
+                TicketUserWinner::create([
+                    'ticket_id' => $ticket->id,
+                    'user_id' => $ticket->user_id,
+                    'lottery_id' => $lottery->id,
+                    'winner_number' => $winningNumber,
+                    'winner_name' => DB::table('users')->where('id', $ticket->user_id)->value('name'),
+                    'winning_amount' => $ticket->ticket_price * 10,
+                ]);
+            }
+        }
     }
-}
 }

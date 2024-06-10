@@ -40,18 +40,19 @@ class HomeController extends Controller
         $user = User::whereDate('created_at', $today)->orderBy('created_at', 'desc')->get();
         $totaluser = count(User::orderBy('created_at', 'desc')->get());
         $allDashboardDetailsToday = Lottery::leftJoin('ticket_purchased_details', 'lotteries.id', '=', 'ticket_purchased_details.lottery_id')
-    ->select('lotteries.id as lottery_id', 'ticket_purchased_details.name', 'ticket_purchased_details.amount')
-    ->orderBy('lotteries.created_at', 'desc')
-    ->get()
-    ->groupBy('lottery_id')
-    ->map(function ($items, $key) {
-        // If there are no tickets, items will be a collection with null values
-        return [
-            'lottery_id' => $key,
-            'names' => $items->pluck('name')->filter()->unique(), // Filter null names out before calling unique
-            'total_amount' => $items->sum('amount') // Sums up, ignoring null values
-        ];
-    });
+        ->select('lotteries.id as lottery_id', 'ticket_purchased_details.name', 'ticket_purchased_details.amount', 'ticket_purchased_details.total_quantity')
+        ->orderBy('lotteries.created_at', 'desc')
+        ->get()
+        ->groupBy('lottery_id')
+        ->map(function ($items, $key) {
+            return [
+                'lottery_id' => $key,
+                'names' => $items->pluck('name')->filter()->unique(),
+                'total_amount' => $items->sum('amount'),
+                'total_quantity' => $items->sum('total_quantity') // Sum of quantity for the same lottery_id
+            ];
+        });
+    
         // Get the sum of amounts for tickets created today
         $totalAmountToday = TicketPurchasedDetail::whereDate('created_at', $today)->sum('amount')/100;
         $totalAmount = TicketPurchasedDetail::sum('amount')/100;

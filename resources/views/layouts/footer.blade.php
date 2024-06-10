@@ -56,7 +56,7 @@ function updateNumbersAndPrice() {
     const totalPrice = price * quantity;
 
     document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
-    document.getElementById('winningPrice').textContent = (price * winningMultiplier).toFixed(2);
+    document.getElementById('winningPrice').textContent = (((price -1) * quantity) * 10);
     
     const numbersContainer = document.getElementById('numbers');
     numbersContainer.innerHTML = ''; // Clear existing circles

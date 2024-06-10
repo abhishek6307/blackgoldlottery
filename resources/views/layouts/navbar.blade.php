@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex align-items-center justify-content-between">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex align-items-center justify-content-around">
    <div>
     <a class="navbar-brand" href="/">
             <img src="{{ asset('images/logo_2.png') }}" width="30" height="30" class="d-inline-block align-top" alt="Black Gold Lottery Logo">
@@ -22,6 +22,19 @@
             <li class="nav-item">
                 <a class="nav-link" href="/contact-us">Contact Us</a>
             </li>
+            <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            More
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{{ route('about') }}">About Us</a>
+                            <a class="dropdown-item" href="{{ route('contact') }}">Contact Us</a>
+                            <a class="dropdown-item" href="{{ route('pricing') }}">Pricing</a>
+                            <a class="dropdown-item" href="{{ route('privacy') }}">Privacy Policy</a>
+                            <a class="dropdown-item" href="{{ route('terms') }}">Terms & Conditions</a>
+                            <a class="dropdown-item" href="{{ route('cancellation') }}">Cancellation/Refund Policy</a>
+                        </div>
+                    </li>
             
             @guest
                 <li class="nav-item">

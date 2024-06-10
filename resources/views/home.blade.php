@@ -452,14 +452,14 @@
                         <span class="text-xs font-weight-bold"> ₹{{ $lottery['total_amount'] / 100 }} </span>
                       </td>
                       @php
-                        $percentage =  $lottery['total_amount'] / 100 / 11;
+                        $percentage =  $lottery['total_quantity'];
                       @endphp
 
                       <td class="align-middle">
                         <div class="progress-wrapper w-75 mx-auto">
                           <div class="progress-info">
                             <div class="progress-percentage">
-                              <span class="text-xs font-weight-bold">{{ $lottery['total_amount'] / 100 / 11}}%</span>
+                              <span class="text-xs font-weight-bold">{{  $percentage}}%</span>
                             </div>
                           </div>
                           <div class="progress">

@@ -5,6 +5,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\DrawController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,3 +46,10 @@ Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])-
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
+
+Route::get('/about-us', [PageController::class, 'aboutUs'])->name('about');
+Route::get('/contact-us', [PageController::class, 'contactUs'])->name('contact');
+Route::get('/pricing', [PageController::class, 'pricing'])->name('pricing');
+Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy');
+Route::get('/terms-conditions', [PageController::class, 'termsConditions'])->name('terms');
+Route::get('/cancellation-refund-policy', [PageController::class, 'cancellationRefundPolicy'])->name('cancellation');

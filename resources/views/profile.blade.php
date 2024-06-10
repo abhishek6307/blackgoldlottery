@@ -168,12 +168,12 @@
                   const totalPrice = price * quantity;
 
                   document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
-                  document.getElementById('winningPrice').textContent = (totalPrice * 10);
+                  document.getElementById('winningPrice').textContent = (((price -1) * quantity) * 10);
                   
                   const numbersContainer = document.getElementById('numbers');
-                  numbersContainer.innerHTML = ''; // Clear existing circles
+                  numbersContainer.innerHTML = '';
                   for (let i = 0; i < quantity; i++) {
-                      numbersContainer.innerHTML += '<div class="number"></div>'; // Add new circles based on quantity
+                      numbersContainer.innerHTML += '<div class="number"></div>'; 
                   }
               }
 
@@ -263,13 +263,15 @@
                                             $user_won = 0;
                                             $winning_number = 0;
                                             foreach($win_nums as $win_num) {
-                                            
-                                              if($win_num == $ticket->lottery->winning_number) {
-                                                $user_won = 1;
+                                    
+                                                $winningDigits = str_split($winning_number);
+                                                  $ticketDigits = str_split($win_num);
+                                                  $matched = !empty(array_intersect($winningDigits, $ticketDigits));
                                                 $winning_number = $ticket->lottery->winning_number;
-                                                $break;
-                                              } 
-                                              
+                                     
+                                              if($matched) {                                        
+                                                $user_won = 1;
+                                              }
                                                 
                                             }
                         
@@ -298,11 +300,29 @@
                                        
                                             <div class="numbers">
                                               
+                                            @php
+                                                $winningDigits = str_split($winning_number);
+                                                $firstMatchFound = false;
+                                            @endphp
+
                                             @foreach($win_nums as $win_num)
-                                                <div id="numbers" class="number" style="{{ $win_num == $winning_number ? 'background-color: green;' : '' }}">
-                                                    {{$win_num}}
+                                                @php
+                                                    $ticketDigits = str_split($win_num);
+                                                    $matched = !empty(array_intersect($winningDigits, $ticketDigits));
+                                                @endphp
+
+                                                <div id="numbers" class="number" style="{{ $matched && !$firstMatchFound ? 'background-color: green;' : '' }}">
+                                                    {{ $win_num }}
                                                 </div>
+
+                                                @if ($matched && !$firstMatchFound)
+                                                    @php
+                                                        $firstMatchFound = true; // Set to true after the first match is found
+                                                    @endphp
+                                                @endif
                                             @endforeach
+
+
 
                                             </div>
                                        

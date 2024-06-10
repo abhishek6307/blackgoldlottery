@@ -60,7 +60,7 @@
                           </div>
                         </div>
                       </td></span></div>
-        <div id="winningAmount" class="mt-3">Winning Amount: ₹<span id="winningPrice">110</span></div>
+        <div id="winningAmount" class="mt-3">Winning Amount: ₹<span id="winningPrice">100</span></div>
         <div id="response" class="mt-3"></div>
     </div>
 </div>

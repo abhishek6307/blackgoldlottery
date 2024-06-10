@@ -117,7 +117,7 @@
 
                     <div class="col-12 col-xl-8">
                         <div class=" ">
-                            <div class="card-header pb-0 pt-3" id="profile-tickets-section">
+                            <div style="padding:1rem 0 !important;" class="card-header" id="profile-tickets-section">
                                 <div class="banner">
                                     <div class="form-container">
                                         <div class="lottery-ticket">

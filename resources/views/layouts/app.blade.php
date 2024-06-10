@@ -241,7 +241,7 @@
             margin: -5rem auto 2rem auto;
             z-index: 1;
             position: relative;
-            width: 90%;
+            width: 100%;
             left: 0%;
             color: white;
             height: 100%;

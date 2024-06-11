@@ -4,7 +4,9 @@
     </footer>
     <script>
 
-
+var today = new Date();
+            var dateString = today.getFullYear() + '-' + (today.getMonth() + 1).toString().padStart(2, '0') + '-' + today.getDate().toString().padStart(2, '0');
+            document.getElementById('date').innerText = dateString;
 function updateNumbersAndPrice() {
     const quantity = document.getElementById('ticketCount').value;
     const numbersContainer = document.getElementById('numbers');

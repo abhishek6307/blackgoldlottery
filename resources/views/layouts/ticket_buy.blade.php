@@ -17,7 +17,7 @@
     <div class="form-container">
         <div class="lottery-ticket">
             <h1>Lottery Ticket</h1>
-            <p>Draw Date: 2024-06-01</p>
+            <p>Draw Date: <span id="date"></span></p>
             @if($undrawnLottery)
                 <div class="mt-0">
                     <div id="timer">Time remaining: <span class="remaining-times" id="time">{{ gmdate('i:s', $timeRemaining) }}</span></div>

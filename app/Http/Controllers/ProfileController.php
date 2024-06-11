@@ -18,38 +18,31 @@ class ProfileController extends Controller
         $today = Carbon::today();
         $userId = Auth::id();
         
-        // Fetch undrawn lottery
-        $undrawnLottery = Lottery::where('drawn', false)->first();
+        $current_time = Carbon::now();
+        $undrawnLottery = Lottery::where('drawn', false)->first();         
         
-        // If no undrawn lottery exists, create one
         if (!$undrawnLottery) {
+            // Create a new lottery with a random double-digit winning number
             $undrawnLottery = Lottery::create([
-                'winning_number' => null,
+                'winning_number' => str_pad(mt_rand(0, 99), 2, '0', STR_PAD_LEFT),
                 'drawn' => false,
                 'draw_time' => null,
             ]);
             $timeRemaining = 5 * 60;
         } else {
             // Calculate the time remaining
-            $current_time = Carbon::now();
             $timeElapsed = $current_time->diffInSeconds($undrawnLottery->created_at);
             $timeRemaining = 5 * 60 - $timeElapsed;
 
             if ($timeRemaining <= 0) {
-                // Draw the lottery
-                $winningNumber = str_pad(mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
-                $undrawnLottery->update([
-                    'winning_number' => $winningNumber,
-                    'drawn' => true,
-                    'draw_time' => $current_time,
-                ]);
-                $this->withdrawLottery($undrawnLottery, $winningNumber);
+                // Draw the current lottery and create a new one
+                $this->withdrawLottery($undrawnLottery);
                 $undrawnLottery = Lottery::create([
-                    'winning_number' => null,
+                    'winning_number' => str_pad(mt_rand(0, 99), 2, '0', STR_PAD_LEFT),
                     'drawn' => false,
                     'draw_time' => null,
                 ]);
-                $timeRemaining = 5 * 60;
+                $timeRemaining = 5 * 60; // Reset timer for the new lottery
             }
         }
         
@@ -78,47 +71,40 @@ class ProfileController extends Controller
         ));
     }
 
-    private function withdrawLottery($lottery, $winningNumber)
+    public function withdrawLottery($lottery)
     {
-        // Retrieve tickets and check for any digit match in the winning number
+        $current_time = Carbon::now();
+
+        $lottery->update([
+            'drawn' => true,
+            'draw_time' => $current_time,
+        ]);
+
+        $winningNumber = $lottery->winning_number;
+        $winningOnesDigit = $winningNumber % 10;
+
+        // Retrieve tickets and check for any one's digit match in the winning number
         $winningTickets = Ticket::where('lottery_id', $lottery->id)
             ->get()
-            ->filter(function ($ticket) use ($winningNumber) {
-                // Convert the winning number and user's numbers to arrays of digits
-                $winningDigits = str_split($winningNumber);
-                $ticketNumbers = [
-                    str_split($ticket->win_num1),
-                    str_split($ticket->win_num2),
-                    str_split($ticket->win_num3),
-                    str_split($ticket->win_num4),
-                    str_split($ticket->win_num5),
+            ->filter(function ($ticket) use ($winningOnesDigit) {
+                // Extract the one's digit of each ticket number
+                $ticketOnesDigits = [
+                    $ticket->win_num1 % 10,
+                    $ticket->win_num2 % 10,
+                    $ticket->win_num3 % 10,
+                    $ticket->win_num4 % 10,
+                    $ticket->win_num5 % 10,
                 ];
 
-                // Check for any matching digit
-                foreach ($ticketNumbers as $ticketDigits) {
-                    if (array_intersect($winningDigits, $ticketDigits)) {
-                        return true; // A matching digit found
-                    }
-                }
-
-                return false; // No matching digit
+                // Check if any of the ticket's one's digits match the winning one's digit
+                return in_array($winningOnesDigit, $ticketOnesDigits);
             });
 
         // Process each winning ticket
         foreach ($winningTickets as $ticket) {
             $existingWinner = TicketUserWinner::where('lottery_id', $lottery->id)->first();
 
-            if ($existingWinner) {
-                // Update the existing record
-                $existingWinner->update([
-                    'ticket_id' => $ticket->id,
-                    'user_id' => $ticket->user_id,
-                    'winner_number' => $winningNumber,
-                    'winner_name' => DB::table('users')->where('id', $ticket->user_id)->value('name'),
-                    'winning_amount' => $ticket->ticket_price * 10,
-                ]);
-            } else {
-                // Create a new record
+            if (!$existingWinner) {
                 TicketUserWinner::create([
                     'ticket_id' => $ticket->id,
                     'user_id' => $ticket->user_id,

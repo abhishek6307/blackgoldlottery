@@ -56,14 +56,17 @@ function updateNumbersAndPrice() {
     const quantityElement = document.getElementById('ticketCount');
     const quantity = parseInt(quantityElement.value);
     const totalPrice = price * quantity;
-
+    let tensDigitPrice = Math.floor(price / 10) * 10;
+if (tensDigitPrice > 100) {
+    tensDigitPrice = 100;
+}
     document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
-    document.getElementById('winningPrice').textContent = (((price -1) * quantity) * 10);
+    document.getElementById('winningPrice').textContent = ((tensDigitPrice) * 10);
     
     const numbersContainer = document.getElementById('numbers');
-    numbersContainer.innerHTML = ''; // Clear existing circles
+    numbersContainer.innerHTML = '';
     for (let i = 0; i < quantity; i++) {
-        numbersContainer.innerHTML += '<div class="number"></div>'; // Add new circles based on quantity
+        numbersContainer.innerHTML += '<div class="number"></div>';
     }
 }
 </script>

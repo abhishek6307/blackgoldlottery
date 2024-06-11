@@ -12,7 +12,7 @@
             style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
             <span class="mask  bg-gradient-primary  opacity-6"></span>
         </div>
-        <div class="card card-body mx-3 mx-md-4 mt-n6">
+        <div class="card card-body mt-n6">
             <div class="row gx-4 mb-2">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
@@ -73,9 +73,9 @@
                                 <div class="card-header pb-0">
                                     <h6>Today's Winners : {{$winnersCountToday}}</h6>
                                     <!-- <p class="text-sm">
-                    <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                    <span class="font-weight-bold">24%</span> this month
-                  </p> -->
+                                        <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                                        <span class="font-weight-bold">24%</span> this month
+                                    </p> -->
                                 </div>
                                 <div class="card-body p-3 mt-4">
                                     <div class="timeline timeline-one-side">
@@ -142,7 +142,7 @@
                                                 <option value="" selected disabled>SELECT PRICE</option>
                                                 <option value="11">₹11</option>
                                                 <option value="55">₹55</option>
-                                                <option value="51">₹110</option>
+                                                <option value="110">₹110</option>
                                             </select>
                                             <input autocomplete="off" type="number" id="ticketCount" name="number"
                                                 value="1" min="1" max="5" onchange="updateNumbersAndPrice()" />
@@ -188,9 +188,12 @@
                                         const quantityElement = document.getElementById('ticketCount');
                                         const quantity = parseInt(quantityElement.value);
                                         const totalPrice = price * quantity;
-
+                                        let tensDigitPrice = Math.floor(price / 10) * 10;
+                                        if (tensDigitPrice > 100) {
+                                            tensDigitPrice = 100;
+                                        }
                                         document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
-                                        document.getElementById('winningPrice').textContent = (((price - 1) * quantity) * 10);
+                                        document.getElementById('winningPrice').textContent = ((tensDigitPrice ) * 10);
 
                                         const numbersContainer = document.getElementById('numbers');
                                         numbersContainer.innerHTML = '';
@@ -244,147 +247,98 @@
                         <div class="row">
 
 
-                            @foreach($tickets as $ticket)
-                            <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                                <div class="card card-blog card-plain">
-                                    <div class="card-header p-0 mt-n4 mx-3 sm-ticket-prof-show">
-                                        <div class="lottery-ticket">
-                                            <img src="{{ asset('images/logo_2.png') }}" width="95" height="95" alt=""
-                                                class="ticket-image-prof">
-                                            @php
-                                            $isDrawn = $ticket->lottery->drawn;
-                                            $quantity = $ticket->number;
-                                            $win_num1 = $ticket->win_num1;
-                                            $win_num2 = $ticket->win_num2;
-                                            $win_num3 = $ticket->win_num3;
-                                            $win_num4 = $ticket->win_num4;
-                                            $win_num5 = $ticket->win_num5;
-                                            $win_nums = array();
+                        @foreach($tickets as $ticket)
+                                <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                                    <div class="card card-blog card-plain">
+                                        <div class="card-header p-0 mt-n4 mx-3 sm-ticket-prof-show">
+                                            <div class="lottery-ticket">
+                                                <img src="{{ asset('images/logo_2.png') }}" width="95" height="95" alt="" class="ticket-image-prof">
+                                                @php
+                                             
+                                                    $isDrawn = $ticket->lottery->drawn;
+                                                    $isDrawnFirstWin = $ticket->lottery->drawn;
+                                                    $quantity = $ticket->number;
+                                                    $win_nums = [$ticket->win_num1, $ticket->win_num2, $ticket->win_num3, $ticket->win_num4, $ticket->win_num5];
+                                                    $drawTimePlus30 = \Carbon\Carbon::parse($ticket->lottery->created_at)->addMinutes(30);
+                                                    $user_won = 0;
+                                                    $winning_number = $ticket->lottery->winning_number;
+                                                    $winningOnesDigit = $winning_number % 10;
 
-                                            if (!is_null($win_num1)) {
-                                            $win_nums[] = $win_num1;
-                                            }
+                                                    foreach ($win_nums as $win_num) {
+                                                        // Extract the ones digit of the current ticket number
+                                                        $ticketOnesDigit = $win_num % 10;
 
-                                            if (!is_null($win_num2)) {
-                                            $win_nums[] = $win_num2;
-                                            }
+                                                        // Check if the ones digits match
+                                                        if ($winningOnesDigit === $ticketOnesDigit) {
+                                                            $user_won = 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                @endphp
 
-                                            if (!is_null($win_num3)) {
-                                            $win_nums[] = $win_num3;
-                                            }
+                                                @if($isDrawn)
+                                                    <p>Drawn Date-Time: {{ $drawTimePlus30->format('d M h:i A') }}</p>
+                                                    <div class="mt-0">
+                                                        <div id="timer">Winner Number</div>
+                                                        <p style="font-size:12px;">Revealed !</p>
+                                                        <div class="numbers">
+                                                            <div id="numbers" class="number" style="background-color: green;">{{ $ticket->lottery->winning_number }}</div>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <p>Draw Date-Time:{{ $drawTimePlus30->format('d M h:i A') }}</p>
+                                                    <div class="mt-0">
+                                                        <div id="timer">Time remaining: <span class="remaining-times" id="time">{{ gmdate('i:s', $timeRemaining) }}</span></div>
+                                                        <div id="timer">Winner Number</div>
+                                                        <p style="font-size:12px;">Not Revealed Yet !</p>
+                                                        <div class="numbers">
+                                                            <div id="numbers" class="number"></div>
+                                                        </div>
+                                                    </div>
+                                                @endif
 
-                                            if (!is_null($win_num4)) {
-                                            $win_nums[] = $win_num4;
-                                            }
+                                                <div class="numbers">
+                                                    @foreach($win_nums as $win_num)
+                                                        @php
+                                                            // Extract the ones digit of the current ticket number
+                                                            $ticketOnesDigit = $win_num % 10;
 
-                                            if (!is_null($win_num5)) {
-                                            $win_nums[] = $win_num5;
-                                            }
+                                                            // Check if the ones digits match
+                                                            $matched = ($winningOnesDigit === $ticketOnesDigit);
+                                                        @endphp
 
-                                            $drawTimePlus30 =
-                                            \Carbon\Carbon::parse($ticket->lottery->created_at)->addMinutes(30);
+                                                        <div id="numbers" class="number" style="{{ $matched && $isDrawn ? 'background-color: green;' : '' }}">
+                                                            {{ $win_num }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
 
-                                            $user_won = 0;
-                                            $winning_number = 0;
-                                            foreach($win_nums as $win_num) {
-
-                                            $winningDigits = str_split($winning_number);
-                                            $ticketDigits = str_split($win_num);
-                                            $matched = !empty(array_intersect($winningDigits, $ticketDigits));
-                                            $winning_number = $ticket->lottery->winning_number;
-
-                                            if($matched) {
-                                            $user_won = 1;
-                                            }
-
-                                            }
-
-
-                                            @endphp
-
+                                                <div class="serial">Serial Number: 123456789</div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body p-3 mt-3">
+                                            <p class="mb-0 text-sm">Lootery ID : {{ $ticket->lottery->id }}</p>
+                                            <p class="mb-0 text-sm">Ticket ID : {{ $ticket->id }}</p>
                                             @if($isDrawn)
-                                            <p>Drawn Date-Time: {{ $drawTimePlus30->format('d M h:i A') }}</p>
-                                            <div class="mt-0">
-                                                <div id="timer">Winner Number</div>
-                                                <p style="font-size:12px;">Revealed !</p>
-                                                <div class="numbers">
-                                                    <div id="numbers" class="number" style="background-color: green;">
-                                                        {{$ticket->lottery->winning_number}}</div>
-                                                </div>
-                                            </div>
+                                                <h5>Ticket Withdrawn</h5>
                                             @else
-                                            <p>Draw Date-Time:{{ $drawTimePlus30->format('d M h:i A') }}</p>
-                                            <div class="mt-0">
-                                                <div id="timer">Time remaining: <span class="remaining-times"
-                                                        id="time">{{ gmdate('i:s', $timeRemaining) }}</span></div>
-                                                <div id="timer">Winner Number</div>
-                                                <p style="font-size:12px;">Not Revealed Yet !</p>
-                                                <div class="numbers">
-                                                    <div id="numbers" class="number"></div>
-                                                </div>
-                                            </div>
+                                                <h5>Ticket Not Withdrawn !</h5>
                                             @endif
 
-
-                                            <div class="numbers">
-
-                                                @php
-                                                $winningDigits = str_split($winning_number);
-                                                $firstMatchFound = false;
-                                                @endphp
-
-                                                @foreach($win_nums as $win_num)
-                                                @php
-                                                $ticketDigits = str_split($win_num);
-                                                $matched = !empty(array_intersect($winningDigits, $ticketDigits));
-                                                @endphp
-
-                                                <div id="numbers" class="number"
-                                                    style="{{ $matched && !$firstMatchFound ? 'background-color: green;' : '' }}">
-                                                    {{ $win_num }}
-                                                </div>
-
-                                                @if ($matched && !$firstMatchFound)
-                                                @php
-                                                $firstMatchFound = true; // Set to true after the first match is found
-                                                @endphp
+                                            @if($user_won)
+                                                <p class="mb-4 text-sm">Congratulations, You Won !</p>
+                                            @else
+                                                @if($isDrawn)
+                                                    <p class="mb-4 text-sm">Bad Luck !, Try Next Time!</p>
+                                                @else
+                                                    <p class="mb-4 text-sm">You can be a Winner !</p>
                                                 @endif
-                                                @endforeach
-
-
-
-                                            </div>
-
-                                            <div class="serial">Serial Number: 123456789</div>
+                                            @endif
                                         </div>
                                     </div>
-                                    <div class="card-body p-3 mt-3">
-                                        <p class="mb-0 text-sm">Lootery ID : {{$ticket->lottery->id}}</p>
-                                        <p class="mb-0 text-sm">Ticket ID : {{$ticket->id}}</p>
-                                        @if($isDrawn)
-                                        <h5>
-                                            Ticket WIthdrawn
-                                        </h5>
-                                        @else
-                                        <h5>
-                                            Ticket Not WIthdrawn !
-                                        </h5>
-                                        @endif
-
-
-                                        @if($user_won)
-                                        <p class="mb-4 text-sm">Congratulation, You Won !</p>
-                                        @else
-                                        @if($isDrawn)
-                                        <p class="mb-4 text-sm">Bad Luck !, Try Next Time!</p>
-                                        @else
-                                        <p class="mb-4 text-sm">You can we a Winner !</p>
-                                        @endif
-                                        @endif
-                                    </div>
                                 </div>
-                            </div>
                             @endforeach
+
                             @endif
 
                         </div>
@@ -394,39 +348,6 @@
             </div>
         </div>
     </div>
-    <!-- @include('layouts.footer') -->
-    <!-- <footer class="footer py-4  ">
-      <div class="container-fluid">
-        <div class="row align-items-center justify-content-lg-between">
-          <div class="col-lg-6 mb-lg-0 mb-4">
-            <div class="copyright text-center text-sm text-muted text-lg-start">
-              © <script>
-                document.write(new Date().getFullYear())
-              </script>,
-              made with <i class="fa fa-heart"></i> by
-              <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-              for a better web.
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About Us</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer> -->
 </div>
 <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">

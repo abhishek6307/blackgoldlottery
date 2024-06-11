@@ -32,11 +32,10 @@
             @csrf
 
             <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="ticketPrice" name="ticketPrice" onchange="updateNumbersAndPrice()" required>
-                <!-- <option value="" selected disabled>SELECT PRICE</option> -->
+                <option value="" selected disabled>SELECT PRICE</option>
                 <option value="11">₹11</option>
-                <option value="21">₹21</option>
-                <option value="51">₹51</option>
-                <option value="101">₹101</option>
+                <option value="55">₹55</option>
+                <option value="110">₹110</option>
             </select>
 
             <input type="number" id="ticketCount" name="number" value="1" min="1" max="5" onchange="updateNumbersAndPrice()" />
@@ -66,8 +65,7 @@
 </div>
 
 <script>
-const pricePerTicket = 11;
-const winningMultiplier = 10;
+
 
 function updateNumbersAndPrice() {
     const priceElement = document.getElementById('ticketPrice');
@@ -75,9 +73,12 @@ function updateNumbersAndPrice() {
     const quantityElement = document.getElementById('ticketCount');
     const quantity = parseInt(quantityElement.value);
     const totalPrice = price * quantity;
-
+    let tensDigitPrice = Math.floor(price / 10) * 10;
+    if (tensDigitPrice > 100) {
+    tensDigitPrice = 100;
+}
     document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
-    document.getElementById('winningPrice').textContent = (totalPrice * 10);
+    document.getElementById('winningPrice').textContent = (tensDigitPrice * 10);
     
     const numbersContainer = document.getElementById('numbers');
     numbersContainer.innerHTML = ''; // Clear existing circles

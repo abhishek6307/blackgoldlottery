@@ -133,29 +133,43 @@ class PaymentController extends Controller
         $lotteryId = $ticket->lottery_id;
         $count = intval($ticket->number);
         $winningNumbers = [];
+        $undrawnLottery = Lottery::where('drawn', false)->first();
+        $undrawnLotteryWinNum = $undrawnLottery->winning_number;
+        $undrawnLotteryOnesDigit = $undrawnLotteryWinNum % 10;
         $existingWinningNumbers = WinningNumber::where('lottery_id', $lotteryId)->pluck('number')->toArray();
-
-        if (count($existingWinningNumbers) >= 99) {
+    
+        if (count($existingWinningNumbers) >= 81) {
             return ['status' => 'full'];
         }
-
-        // Assuming we need a unique set of 5 numbers for each ticket
+    
+        $onesDigitConflict = array_filter($existingWinningNumbers, function($num) use ($undrawnLotteryOnesDigit) {
+            return $num % 10 == $undrawnLotteryOnesDigit;
+        });
+    
         while (count($winningNumbers) < $count) {
             $number = str_pad(mt_rand(1, 99), 2, '0', STR_PAD_LEFT);
-
+            $numberOnesDigit = $number % 10;
+    
+            if ($numberOnesDigit == $undrawnLotteryOnesDigit) {
+                if (count($onesDigitConflict) > 0) {
+                    continue;
+                }
+                $onesDigitConflict[] = $number;
+            }
+    
             if (!in_array($number, $existingWinningNumbers) && !in_array($number, $winningNumbers)) {
                 $winningNumbers[] = $number;
-
                 $user = Auth::user();
                 WinningNumber::create([
-                    'lottery_id' => $lotteryId,
+                    'lottery_id' => $undrawnLottery->id,
                     'number' => $number,
                     'user_id' => $user->id,
                 ]);
                 $existingWinningNumbers[] = $number;
             }
         }
-
+    
         return ['status' => 'success', 'winningNumbers' => $winningNumbers];
     }
+    
 }

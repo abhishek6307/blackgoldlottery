@@ -122,7 +122,7 @@
                                     <div class="form-container">
                                         <div class="lottery-ticket">
                                             <h1>Lottery Ticket</h1>
-                                            <p>Draw Date: 2024-06-01</p>
+                                            <p>Draw Date: <span id="date"></span></p>
                                             @if($undrawnLottery)
                                             <div class="mt-0">
                                                 <div id="timer">Time remaining: <span class="remaining-times"
@@ -141,9 +141,8 @@
                                                 onchange="updateNumbersAndPrice()" required>
                                                 <option value="" selected disabled>SELECT PRICE</option>
                                                 <option value="11">₹11</option>
-                                                <option value="21">₹21</option>
-                                                <option value="51">₹51</option>
-                                                <option value="101">₹101</option>
+                                                <option value="55">₹55</option>
+                                                <option value="51">₹110</option>
                                             </select>
                                             <input autocomplete="off" type="number" id="ticketCount" name="number"
                                                 value="1" min="1" max="5" onchange="updateNumbersAndPrice()" />

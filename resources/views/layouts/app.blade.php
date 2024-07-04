@@ -92,7 +92,7 @@
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
+            max-width: 600px;
             margin: -5rem auto 2rem auto;
             z-index: 1;
             position: relative;
@@ -378,6 +378,16 @@
 
         label.form-label {
             color: white;
+        }
+        .dropdown-item:hover, .dropdown-item:focus {
+            color: black;
+            background: #644d2f;
+        }
+        h3 {
+            color: white !important;
+        }
+        span.label-quantity {
+            margin-right: 24px;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

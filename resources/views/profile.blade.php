@@ -144,7 +144,7 @@
                                                 <option value="55">₹55</option>
                                                 <option value="110">₹110</option>
                                             </select>
-                                            <input autocomplete="off" type="number" id="ticketCount" name="number"
+                                            <span class="label-quantity">SELECT QUANTITY</span><input autocomplete="off" type="number" id="ticketCount" name="number"
                                                 value="1" min="1" max="5" onchange="updateNumbersAndPrice()" />
                                             @auth
                                             <button type="submit" class="btn btn-primary btn-block">Buy Ticket</button>

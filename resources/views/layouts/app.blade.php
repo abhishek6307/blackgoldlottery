@@ -9,6 +9,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}">
     <meta name="monetag" content="6aab0260eca616293dd14d0944678dc5">
+    <meta name="monetag" content="6e3d2e9e91b32209e6cddd6bea0f07f9">
   <title>
     Material Dashboard 2 by Creative Tim
   </title>

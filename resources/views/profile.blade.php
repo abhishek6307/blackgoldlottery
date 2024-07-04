@@ -32,320 +32,320 @@
                 </div>
 
             </div>
+            
             <div class="row">
-                <div class="row">
 
-                    <div class="col-12 col-xl-4">
-                        <div class="card card-plain">
-                            <div class="card-header pb-0 p-3">
-                                <div class="row">
-                                    <div class="col-md-8 d-flex align-items-center">
-                                        <h6 class="mb-0">Profile Information</h6>
-                                    </div>
-                                    <div class="col-md-4 text-end">
-                                        <a href="javascript:;">
-                                            <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" title="Edit Profile"></i>
-                                        </a>
-                                    </div>
+                <div class="col-12 col-xl-4">
+                    <div class="card card-plain">
+                        <div class="card-header pb-0 p-3">
+                            <div class="row">
+                                <div class="col-md-8 d-flex align-items-center">
+                                    <h6 class="mb-0">Profile Information</h6>
                                 </div>
-                            </div>
-                            <div class="card-body p-3">
-                                <p class="text-sm">
-
-                                </p>
-                                <hr class="horizontal gray-light my-4">
-                                <ul class="list-group">
-                                    <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong
-                                            class="text-dark">Full Name:</strong> &nbsp; {{ Auth::user()->name }}!</li>
-                                    <li class="list-group-item border-0 ps-0 text-sm"><strong
-                                            class="text-dark">Mobile:</strong> &nbsp; </li>
-                                    <li class="list-group-item border-0 ps-0 text-sm"><strong
-                                            class="text-dark">Email:</strong> &nbsp; {{ Auth::user()->email }}</li>
-                                    <li class="list-group-item border-0 ps-0 text-sm"><strong
-                                            class="text-dark">Location:</strong> &nbsp; USA</li>
-                                </ul>
+                                <div class="col-md-4 text-end">
+                                    <a href="javascript:;">
+                                        <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip"
+                                            data-bs-placement="top" title="Edit Profile"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                        <div class="card card-plain">
-                            <div class="col-12 mb-4 today-winner-frontend">
+                        <div class="card-body p-3">
+                            <p class="text-sm">
 
-                                <div class="card-header pb-0">
-                                    <h6>Today's Winners : {{$winnersCountToday}}</h6>
-                                    <!-- <p class="text-sm">
-                                        <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                                        <span class="font-weight-bold">24%</span> this month
-                                    </p> -->
+                            </p>
+                            <hr class="horizontal gray-light my-4">
+                            <ul class="list-group">
+                                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong
+                                        class="text-dark">Full Name:</strong> &nbsp; {{ Auth::user()->name }}!</li>
+                                <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                        class="text-dark">Mobile:</strong> &nbsp; </li>
+                                <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                        class="text-dark">Email:</strong> &nbsp; {{ Auth::user()->email }}</li>
+                                <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                        class="text-dark">Location:</strong> &nbsp; USA</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card card-plain">
+                        <div class="col-12 mb-4 today-winner-frontend">
+
+                            <div class="card-header pb-0">
+                                <h6>Today's Winners : {{$winnersCountToday}}</h6>
+                                <!-- <p class="text-sm">
+                                    <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+                                    <span class="font-weight-bold">24%</span> this month
+                                </p> -->
+                            </div>
+                            <div class="card-body p-3 mt-4">
+                                <div class="timeline timeline-one-side">
+                                    @php
+                                    $winnersCount = $winnersCountToday;
+                                    @endphp
+                                    @foreach($winnersToday as $winner)
+
+                                    @if($winnersCount > 0)
+                                    <div class="timeline-block mb-3">
+                                        <span class="timeline-step">
+                                            {{$winnersCount}}
+                                            @php
+                                            $winnersCount = $winnersCountToday - 1;
+                                            @endphp
+                                        </span>
+                                        <div class="timeline-content">
+                                            <h6 class="text-dark text-sm font-weight-bold mb-0">Name :
+                                                {{$winner->winner_name}}</h6>
+                                            <h6 class="text-dark text-sm font-weight-bold mb-0">Winning Amount :
+                                                {{$winner->winning_amount}}</h6>
+                                            <h6 class="text-dark text-sm font-weight-bold mb-0">Winning Number :
+                                                {{$winner->winner_number}}</h6>
+                                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                {{$winner->created_at->format('d M h:i A')}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                    @endforeach
                                 </div>
-                                <div class="card-body p-3 mt-4">
-                                    <div class="timeline timeline-one-side">
-                                        @php
-                                        $winnersCount = $winnersCountToday;
-                                        @endphp
-                                        @foreach($winnersToday as $winner)
+                            </div>
 
-                                        @if($winnersCount > 0)
-                                        <div class="timeline-block mb-3">
-                                            <span class="timeline-step">
-                                                {{$winnersCount}}
-                                                @php
-                                                $winnersCount = $winnersCountToday - 1;
-                                                @endphp
-                                            </span>
-                                            <div class="timeline-content">
-                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Name :
-                                                    {{$winner->winner_name}}</h6>
-                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Winning Amount :
-                                                    {{$winner->winning_amount}}</h6>
-                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Winning Number :
-                                                    {{$winner->winner_number}}</h6>
-                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                    {{$winner->created_at->format('d M h:i A')}}
-                                                </p>
-                                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-xl-8">
+                    <div class=" ">
+                        <div style="padding:1rem 0 !important;" class="card-header" id="profile-tickets-section">
+                            <div class="banner">
+                                <div class="form-container">
+                                    <div class="lottery-ticket">
+                                        <h1>Lottery Ticket</h1>
+                                        <p>Draw Date: <span id="date"></span></p>
+                                        @if($undrawnLottery)
+                                        <div class="mt-0">
+                                            <div id="timer">Time remaining: <span class="remaining-times"
+                                                    id="time">{{ gmdate('i:s', $timeRemaining) }}</span></div>
                                         </div>
                                         @endif
-
-                                        @endforeach
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-xl-8">
-                        <div class=" ">
-                            <div style="padding:1rem 0 !important;" class="card-header" id="profile-tickets-section">
-                                <div class="banner">
-                                    <div class="form-container">
-                                        <div class="lottery-ticket">
-                                            <h1>Lottery Ticket</h1>
-                                            <p>Draw Date: <span id="date"></span></p>
-                                            @if($undrawnLottery)
-                                            <div class="mt-0">
-                                                <div id="timer">Time remaining: <span class="remaining-times"
-                                                        id="time">{{ gmdate('i:s', $timeRemaining) }}</span></div>
-                                            </div>
-                                            @endif
-                                            <div id="numbers" class="numbers">
-                                                <div class="number"></div>
-                                            </div>
-                                            <div class="serial">Serial Number: 123456789</div>
+                                        <div id="numbers" class="numbers">
+                                            <div class="number"></div>
                                         </div>
-                                        <form id="lottery-form" method="POST" action="{{ route('lottery.payment') }}">
-                                            @csrf
-                                            <select class="form-select form-select-sm"
-                                                aria-label=".form-select-sm example" id="ticketPrice" name="ticketPrice"
-                                                onchange="updateNumbersAndPrice()" required>
-                                                <option value="" selected disabled>SELECT PRICE</option>
-                                                <option value="11">₹11</option>
-                                                <option value="55">₹55</option>
-                                                <option value="110">₹110</option>
-                                            </select>
-                                            <span class="label-quantity">SELECT QUANTITY</span><input autocomplete="off" type="number" id="ticketCount" name="number"
-                                                value="1" min="1" max="5" onchange="updateNumbersAndPrice()" />
-                                            @auth
-                                            <button type="submit" class="btn btn-primary btn-block">Buy Ticket</button>
-                                            @else
-                                            <a href="{{ route('login') }}" class="btn btn-primary btn-block">Buy
-                                                Ticket</a>
-                                            @endauth
-                                        </form>
-                                        <div id="price" class="mt-3">Price: ₹<span id="totalPrice">11</span></div>
-                                        <div class="buyied-tickets" class="mt-3">Tickets Sold <span class="green-color">
-                                                <td class="align-middle">
-                                                    <div class="progress-wrapper w-75 mx-auto">
-                                                        <div class="progress-info">
-                                                            <div class="progress-percentage">
-                                                                <span
-                                                                    class="text-xs font-weight-bold">{{$activeLotteryTicketsCounts}}%</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="progress mt-3">
-                                                            <div class="progress-bar bg-gradient-info"
-                                                                style="width: {{$activeLotteryTicketsCounts}}%;"
-                                                                role="progressbar"
-                                                                aria-valuenow="{{ $activeLotteryTicketsCounts }}"
-                                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="serial">Serial Number: 123456789</div>
+                                    </div>
+                                    <form id="lottery-form" method="POST" action="{{ route('lottery.payment') }}">
+                                        @csrf
+                                        <select class="form-select form-select-sm"
+                                            aria-label=".form-select-sm example" id="ticketPrice" name="ticketPrice"
+                                            onchange="updateNumbersAndPrice()" required>
+                                            <option value="" selected disabled>SELECT PRICE</option>
+                                            <option value="11">₹11</option>
+                                            <option value="55">₹55</option>
+                                            <option value="110">₹110</option>
+                                        </select>
+                                        <span class="label-quantity">SELECT QUANTITY</span><input autocomplete="off" type="number" id="ticketCount" name="number"
+                                            value="1" min="1" max="5" onchange="updateNumbersAndPrice()" />
+                                        @auth
+                                        <button type="submit" class="btn btn-primary btn-block">Buy Ticket</button>
+                                        @else
+                                        <a href="{{ route('login') }}" class="btn btn-primary btn-block">Buy
+                                            Ticket</a>
+                                        @endauth
+                                    </form>
+                                    <div id="price" class="mt-3">Price: ₹<span id="totalPrice">11</span></div>
+                                    <div class="buyied-tickets" class="mt-3">Tickets Sold <span class="green-color">
+                                            <td class="align-middle">
+                                                <div class="progress-wrapper w-75 mx-auto">
+                                                    <div class="progress-info">
+                                                        <div class="progress-percentage">
+                                                            <span
+                                                                class="text-xs font-weight-bold">{{$activeLotteryTicketsCounts}}%</span>
                                                         </div>
                                                     </div>
-                                                </td>
-                                            </span></div>
-                                        <div id="winningAmount" class="mt-3">Winning Amount: ₹<span
-                                                id="winningPrice"></span></div>
-                                        <div id="response" class="mt-3"></div>
-                                    </div>
+                                                    <div class="progress mt-3">
+                                                        <div class="progress-bar bg-gradient-info"
+                                                            style="width: {{$activeLotteryTicketsCounts}}%;"
+                                                            role="progressbar"
+                                                            aria-valuenow="{{ $activeLotteryTicketsCounts }}"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </span></div>
+                                    <div id="winningAmount" class="mt-3">Winning Amount: ₹<span
+                                            id="winningPrice"></span></div>
+                                    <div id="response" class="mt-3"></div>
                                 </div>
+                            </div>
 
-                                <script>
-                                    const winningMultiplier = 10;
+                            <script>
+                                const winningMultiplier = 10;
 
-                                    function updateNumbersAndPrice() {
-                                        const priceElement = document.getElementById('ticketPrice');
-                                        const price = parseInt(priceElement.value);
-                                        const quantityElement = document.getElementById('ticketCount');
-                                        const quantity = parseInt(quantityElement.value);
-                                        const totalPrice = price * quantity;
-                                        let tensDigitPrice = Math.floor(price / 10) * 10;
-                                        if (tensDigitPrice > 100) {
-                                            tensDigitPrice = 100;
-                                        }
-                                        document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
-                                        document.getElementById('winningPrice').textContent = ((tensDigitPrice ) * 10);
-
-                                        const numbersContainer = document.getElementById('numbers');
-                                        numbersContainer.innerHTML = '';
-                                        for (let i = 0; i < quantity; i++) {
-                                            numbersContainer.innerHTML += '<div class="number"></div>';
-                                        }
+                                function updateNumbersAndPrice() {
+                                    const priceElement = document.getElementById('ticketPrice');
+                                    const price = parseInt(priceElement.value);
+                                    const quantityElement = document.getElementById('ticketCount');
+                                    const quantity = parseInt(quantityElement.value);
+                                    const totalPrice = price * quantity;
+                                    let tensDigitPrice = Math.floor(price / 10) * 10;
+                                    if (tensDigitPrice > 100) {
+                                        tensDigitPrice = 100;
                                     }
+                                    document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
+                                    document.getElementById('winningPrice').textContent = ((tensDigitPrice ) * 10);
 
-                                    // Timer logic
-                                    let timeRemaining = {{ $timeRemaining }};
-                                    const timerElements = document.getElementsByClassName('remaining-times');
+                                    const numbersContainer = document.getElementById('numbers');
+                                    numbersContainer.innerHTML = '';
+                                    for (let i = 0; i < quantity; i++) {
+                                        numbersContainer.innerHTML += '<div class="number"></div>';
+                                    }
+                                }
 
-                                    function updateTimer() {
-                                        if (timeRemaining <= 0) {
-                                            for (let i = 0; i < timerElements.length; i++) {
-                                                timerElements[i].textContent = "00:00";
-                                            }
-                                            clearInterval(timerInterval);
+                                // Timer logic
+                                let timeRemaining = {{ $timeRemaining }};
+                                const timerElements = document.getElementsByClassName('remaining-times');
 
-                                            setTimeout(function () {
-                                                location.reload();
-                                            }, 2000);
-
-                                            return;
-                                        }
-                                        timeRemaining -= 1;
-                                        const minutes = Math.floor(timeRemaining / 60);
-                                        const seconds = timeRemaining % 60;
+                                function updateTimer() {
+                                    if (timeRemaining <= 0) {
                                         for (let i = 0; i < timerElements.length; i++) {
-                                            timerElements[i].textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                                            timerElements[i].textContent = "00:00";
                                         }
+                                        clearInterval(timerInterval);
+
+                                        setTimeout(function () {
+                                            location.reload();
+                                        }, 2000);
+
+                                        return;
                                     }
+                                    timeRemaining -= 1;
+                                    const minutes = Math.floor(timeRemaining / 60);
+                                    const seconds = timeRemaining % 60;
+                                    for (let i = 0; i < timerElements.length; i++) {
+                                        timerElements[i].textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                                    }
+                                }
 
-                                    const timerInterval = setInterval(updateTimer, 1000);
-                                </script>
+                                const timerInterval = setInterval(updateTimer, 1000);
+                            </script>
 
-                                <div class="card-body p-3">
+                            <div class="card-body p-3">
 
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 mt-4">
-                        <div class="mb-5 ps-3">
-                            @if($tickets->isEmpty())
-                            <h3>You have no tickets.</p>
-                                @else
-                                <h3 class="mb-1">Recent Tickets</h6>
-                                    <p class="text-sm">Your Recent Tickets will appear here !</p>
-                        </div>
-                        <div class="row">
+                </div>
+                <div class="col-12 mt-4">
+                    <div class="mb-5 ps-3">
+                        @if($tickets->isEmpty())
+                        <h3>You have no tickets.</p>
+                            @else
+                            <h3 class="mb-1">Recent Tickets</h6>
+                                <p class="text-sm">Your Recent Tickets will appear here !</p>
+                    </div>
+                    <div class="row">
 
 
-                        @foreach($tickets as $ticket)
-                                <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                                    <div class="card card-blog card-plain">
-                                        <div class="card-header p-0 mt-n4 mx-3 sm-ticket-prof-show">
-                                            <div class="lottery-ticket">
-                                                <img src="{{ asset('images/logo_2.png') }}" width="95" height="95" alt="" class="ticket-image-prof">
-                                                @php
-                                             
-                                                    $isDrawn = $ticket->lottery->drawn;
-                                                    $isDrawnFirstWin = $ticket->lottery->drawn;
-                                                    $quantity = $ticket->number;
-                                                    $win_nums = [$ticket->win_num1, $ticket->win_num2, $ticket->win_num3, $ticket->win_num4, $ticket->win_num5];
-                                                    $drawTimePlus30 = \Carbon\Carbon::parse($ticket->lottery->created_at)->addMinutes(30);
-                                                    $user_won = 0;
-                                                    $winning_number = $ticket->lottery->winning_number;
-                                                    $winningOnesDigit = $winning_number % 10;
+                    @foreach($tickets as $ticket)
+                            <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                                <div class="card card-blog card-plain">
+                                    <div class="card-header p-0 mt-n4 mx-3 sm-ticket-prof-show">
+                                        <div class="lottery-ticket">
+                                            <img src="{{ asset('images/logo_2.png') }}" width="95" height="95" alt="" class="ticket-image-prof">
+                                            @php
+                                            
+                                                $isDrawn = $ticket->lottery->drawn;
+                                                $isDrawnFirstWin = $ticket->lottery->drawn;
+                                                $quantity = $ticket->number;
+                                                $win_nums = [$ticket->win_num1, $ticket->win_num2, $ticket->win_num3, $ticket->win_num4, $ticket->win_num5];
+                                                $drawTimePlus30 = \Carbon\Carbon::parse($ticket->lottery->created_at)->addMinutes(30);
+                                                $user_won = 0;
+                                                $winning_number = $ticket->lottery->winning_number;
+                                                $winningOnesDigit = $winning_number % 10;
 
-                                                    foreach ($win_nums as $win_num) {
+                                                foreach ($win_nums as $win_num) {
+                                                    // Extract the ones digit of the current ticket number
+                                                    $ticketOnesDigit = $win_num % 10;
+
+                                                    // Check if the ones digits match
+                                                    if ($winningOnesDigit === $ticketOnesDigit) {
+                                                        $user_won = 1;
+                                                        break;
+                                                    }
+                                                }
+                                            @endphp
+
+                                            @if($isDrawn)
+                                                <p>Drawn Date-Time: {{ $drawTimePlus30->format('d M h:i A') }}</p>
+                                                <div class="mt-0">
+                                                    <div id="timer">Winner Number</div>
+                                                    <p style="font-size:12px;">Revealed !</p>
+                                                    <div class="numbers">
+                                                        <div id="numbers" class="number" style="background-color: green;">{{ $ticket->lottery->winning_number }}</div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <p>Draw Date-Time:{{ $drawTimePlus30->format('d M h:i A') }}</p>
+                                                <div class="mt-0">
+                                                    <div id="timer">Time remaining: <span class="remaining-times" id="time">{{ gmdate('i:s', $timeRemaining) }}</span></div>
+                                                    <div id="timer">Winner Number</div>
+                                                    <p style="font-size:12px;">Not Revealed Yet !</p>
+                                                    <div class="numbers">
+                                                        <div id="numbers" class="number"></div>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            <div class="numbers">
+                                                @foreach($win_nums as $win_num)
+                                                    @php
                                                         // Extract the ones digit of the current ticket number
                                                         $ticketOnesDigit = $win_num % 10;
 
                                                         // Check if the ones digits match
-                                                        if ($winningOnesDigit === $ticketOnesDigit) {
-                                                            $user_won = 1;
-                                                            break;
-                                                        }
-                                                    }
-                                                @endphp
+                                                        $matched = ($winningOnesDigit === $ticketOnesDigit);
+                                                    @endphp
 
-                                                @if($isDrawn)
-                                                    <p>Drawn Date-Time: {{ $drawTimePlus30->format('d M h:i A') }}</p>
-                                                    <div class="mt-0">
-                                                        <div id="timer">Winner Number</div>
-                                                        <p style="font-size:12px;">Revealed !</p>
-                                                        <div class="numbers">
-                                                            <div id="numbers" class="number" style="background-color: green;">{{ $ticket->lottery->winning_number }}</div>
-                                                        </div>
+                                                    <div id="numbers" class="number" style="{{ $matched && $isDrawn ? 'background-color: green;' : '' }}">
+                                                        {{ $win_num }}
                                                     </div>
-                                                @else
-                                                    <p>Draw Date-Time:{{ $drawTimePlus30->format('d M h:i A') }}</p>
-                                                    <div class="mt-0">
-                                                        <div id="timer">Time remaining: <span class="remaining-times" id="time">{{ gmdate('i:s', $timeRemaining) }}</span></div>
-                                                        <div id="timer">Winner Number</div>
-                                                        <p style="font-size:12px;">Not Revealed Yet !</p>
-                                                        <div class="numbers">
-                                                            <div id="numbers" class="number"></div>
-                                                        </div>
-                                                    </div>
-                                                @endif
-
-                                                <div class="numbers">
-                                                    @foreach($win_nums as $win_num)
-                                                        @php
-                                                            // Extract the ones digit of the current ticket number
-                                                            $ticketOnesDigit = $win_num % 10;
-
-                                                            // Check if the ones digits match
-                                                            $matched = ($winningOnesDigit === $ticketOnesDigit);
-                                                        @endphp
-
-                                                        <div id="numbers" class="number" style="{{ $matched && $isDrawn ? 'background-color: green;' : '' }}">
-                                                            {{ $win_num }}
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-
-                                                <div class="serial">Serial Number: 123456789</div>
+                                                @endforeach
                                             </div>
-                                        </div>
-                                        <div class="card-body p-3 mt-3">
-                                            <p class="mb-0 text-sm">Lootery ID : {{ $ticket->lottery->id }}</p>
-                                            <p class="mb-0 text-sm">Ticket ID : {{ $ticket->id }}</p>
-                                            @if($isDrawn)
-                                                <h5>Ticket Withdrawn</h5>
-                                            @else
-                                                <h5>Ticket Not Withdrawn !</h5>
-                                            @endif
 
-                                            @if($user_won)
-                                                <p class="mb-4 text-sm">Congratulations, You Won !</p>
-                                            @else
-                                                @if($isDrawn)
-                                                    <p class="mb-4 text-sm">Bad Luck !, Try Next Time!</p>
-                                                @else
-                                                    <p class="mb-4 text-sm">You can be a Winner !</p>
-                                                @endif
-                                            @endif
+                                            <div class="serial">Serial Number: 123456789</div>
                                         </div>
                                     </div>
+                                    <div class="card-body p-3 mt-3">
+                                        <p class="mb-0 text-sm">Lootery ID : {{ $ticket->lottery->id }}</p>
+                                        <p class="mb-0 text-sm">Ticket ID : {{ $ticket->id }}</p>
+                                        @if($isDrawn)
+                                            <h5>Ticket Withdrawn</h5>
+                                        @else
+                                            <h5>Ticket Not Withdrawn !</h5>
+                                        @endif
+
+                                        @if($user_won)
+                                            <p class="mb-4 text-sm">Congratulations, You Won !</p>
+                                        @else
+                                            @if($isDrawn)
+                                                <p class="mb-4 text-sm">Bad Luck !, Try Next Time!</p>
+                                            @else
+                                                <p class="mb-4 text-sm">You can be a Winner !</p>
+                                            @endif
+                                        @endif
+                                    </div>
                                 </div>
-                            @endforeach
+                            </div>
+                        @endforeach
 
-                            @endif
+                        @endif
 
-                        </div>
                     </div>
-                    @include('layouts.footer')
                 </div>
+                @include('layouts.footer')
             </div>
+       
         </div>
     </div>
 </div>

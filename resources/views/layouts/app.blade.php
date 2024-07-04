@@ -71,7 +71,7 @@
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            max-width: 500px;
             margin: -5rem auto 2rem auto;
             z-index: 1;
             position: relative;
@@ -92,7 +92,7 @@
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            max-width: 500px;
             margin: -5rem auto 2rem auto;
             z-index: 1;
             position: relative;
@@ -237,7 +237,7 @@
             padding: 0;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
+            max-width: 600px;
             margin: -5rem auto 2rem auto;
             z-index: 1;
             position: relative;

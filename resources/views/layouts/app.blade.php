@@ -387,7 +387,7 @@
             color: white !important;
         }
         span.label-quantity {
-            margin-right: 24px;
+            margin-right: 20px;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

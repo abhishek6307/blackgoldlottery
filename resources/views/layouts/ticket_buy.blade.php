@@ -41,10 +41,10 @@
             <span class="label-quantity">SELECT QUANTITY</span>
             <input type="number" id="ticketCount" name="number" value="1" min="1" max="5" onchange="updateNumbersAndPrice()" />
             @auth
-                <button type="submit" class="btn btn-primary btn-block">Buy Ticket</button>
+            <br><button type="submit" class="btn btn-primary btn-block">Buy Ticket</button>
                 <div id="price" class="mt-1">Choose Quantity </div>
             @else
-                <a href="{{ route('login') }}" class="btn btn-primary btn-block">Buy Ticket</a>
+                <br><a href="{{ route('login') }}" class="btn btn-primary btn-block">Buy Ticket</a>
             @endauth
         </form>
         <div id="price" class="mt-3">Price: ₹<span id="totalPrice">11</span></div>

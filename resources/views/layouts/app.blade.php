@@ -7,7 +7,7 @@
     <title>@yield('title', 'Black Gold Lottery')</title>
     <link id="pagestyle" href="{{ asset('css/material-dashboard.css?v=3.1.0') }}" rel="stylesheet" />
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/apple-icon.png') }}">
-  <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}">
   <title>
     Material Dashboard 2 by Creative Tim
   </title>
@@ -49,7 +49,7 @@
         .banner {
             background: url('http://blackgoldlottery.local/../images/banner.jpg') no-repeat center center;
             background-size: cover;
-            height: 85vh;
+            height: 90vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -71,7 +71,7 @@
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
+            max-width: 600px;
             margin: -5rem auto 2rem auto;
             z-index: 1;
             position: relative;
@@ -352,8 +352,33 @@
             }
         }
         p {
-    color: white !important;
-}
+            color: white !important;
+        }
+        .dropdown-menu.show {
+            background: #19161b;
+        }
+
+        a.dropdown-item {
+            color: #dc8a1c;
+        }
+        .dropdown-menu.show {
+            background: #19161b;
+        }
+
+        a.dropdown-item {
+            color: #dc8a1c;
+        }
+
+        input.form-control, textarea#message , textarea#message:focus, textarea#message:focus-visible,  input.form-control:focus, input.form-controlz:focus-visible{
+            border: 2px solid #f4f4f4;
+            width: 50%;
+            padding: 9px 12px;
+            color: white;
+        }
+
+        label.form-label {
+            color: white;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
